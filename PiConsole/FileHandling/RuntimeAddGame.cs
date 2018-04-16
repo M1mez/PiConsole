@@ -55,9 +55,9 @@ namespace PiConsole.FileHandling
             get
             {
                 var zipList = new List<string>();
-                zipList.AddRange(Directory.GetFiles(Constants.PluginPath, "*.zip").Select(Path.GetFullPath).ToList());
+                //zipList.AddRange(Directory.GetFiles(Constants.PluginPath, "*.zip").Select(Path.GetFullPath).ToList());
                 zipList.AddRange(Directory.GetFiles(Constants.PluginPath, "*.plugin").Select(Path.GetFullPath).ToList());
-                zipList.AddRange(Directory.GetFiles(Constants.GamePath, "*.zip").Select(Path.GetFullPath).ToList());
+                //zipList.AddRange(Directory.GetFiles(Constants.GamePath, "*.zip").Select(Path.GetFullPath).ToList());
                 zipList.AddRange(Directory.GetFiles(Constants.GamePath, "*.game").Select(Path.GetFullPath).ToList());
                 return zipList;
             }

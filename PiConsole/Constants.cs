@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PiConsole
 {
     public static class Constants
     {
-        private static string _deployPath;
-        private static string DeployPath => _deployPath ?? (_deployPath = Environment.CurrentDirectory);
-
+        private static readonly string DeployPath = Environment.CurrentDirectory;
         public static string GamePath
         {
             get

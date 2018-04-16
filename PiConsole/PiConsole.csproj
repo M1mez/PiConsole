@@ -45,14 +45,16 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="FileHandling\RuntimeAddGame.cs" />
-    <Compile Include="GameHandling\StartedContext.cs" />
-    <Compile Include="GameStates\Started.cs" />
-    <Compile Include="GameStates\NeedsRepair.cs" />
+    <Compile Include="GameHandling\GameStateContext.cs" />
+    <Compile Include="GameStates\Demo_Started.cs" />
+    <Compile Include="GameStates\Demo_Downloaded.cs" />
+    <Compile Include="GameStates\Full_Started.cs" />
     <Compile Include="GameStates\NeedsUpdate.cs" />
-    <Compile Include="GameStates\Bought.cs" />
-    <Compile Include="GameStates\Uninstalled.cs" />
-    <Compile Include="GameStates\FullInstallation.cs" />
-    <Compile Include="GameStates\Demo.cs" />
+    <Compile Include="GameStates\Full_Downloaded.cs" />
+    <Compile Include="GameStates\Demo_Uninstalled.cs" />
+    <Compile Include="GameStates\Full_Uninstalled.cs" />
+    <Compile Include="GameStates\Full_Installation.cs" />
+    <Compile Include="GameStates\Demo_Installation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
