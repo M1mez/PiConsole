@@ -9,28 +9,35 @@ namespace PiConsole.GameStates
 {
     class Full_Downloaded : IGameState
     {
-        public void Install(ref IGameState oldState)
+        private readonly IGameStateSetter _setter;
+
+        public Full_Downloaded(IGameStateSetter setter)
         {
-            Console.Write("Install: Full Game downloaded, will install now. ");
-            oldState = new Full_Installation();
+            _setter = setter;
         }
 
-        public void Upgrade(ref IGameState oldState)
+        public void Install()
+        {
+            Console.Write("Install: Full Game downloaded, will install now. ");
+            _setter.GameState = new Full_Installation(_setter);
+        }
+
+        public void Upgrade()
         {
             throw new WrongStateException("Cannot upgrade to Full Installation if Demo is not installed!");
         }
 
-        public void Update(ref IGameState oldState)
+        public void Update()
         {
             throw new WrongStateException("Cannot Update if not installed!");
         }
 
-        public void Start(ref IGameState oldState)
+        public void Start()
         {
             throw new WrongStateException("Install the game first!");
         }
 
-        public void UnInstall(ref IGameState oldState)
+        public void UnInstall()
         {
             throw new WrongStateException("Cannot uninstall game if not previously installed!");
         }

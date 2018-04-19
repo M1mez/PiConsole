@@ -20,15 +20,15 @@ namespace PiConsole
             var context = new GameStateContext();
             var stateList = new List<IGameState>()
             {
-                new Demo_Downloaded(),
-                new Full_Downloaded(),
-                new Demo_Installation(),
-                new Full_Installation(),
-                new Demo_Started(),
-                new Full_Started(),
-                new Demo_Uninstalled(),
-                new Full_Uninstalled(),
-                new NeedsUpdate()
+                new Demo_Downloaded(context),
+                new Full_Downloaded(context),
+                new Demo_Installation(context),
+                new Full_Installation(context),
+                new Demo_Started(context),
+                new Full_Started(context),
+                new Demo_Uninstalled(context),
+                new Full_Uninstalled(context),
+                new NeedsUpdate(context)
             };
             stateList.ForEach(state =>
             {
@@ -37,15 +37,15 @@ namespace PiConsole
                 Console.WriteLine("║ " + stateName + " ║");
                 Console.WriteLine($"╚{new string('═', stateName.Length + 2)}╝");
                 context.GameState = state;
-                context.Install(ref context.GameState);
+                context.Install();
                 context.GameState = state;
-                context.Start(ref context.GameState);
+                context.Start();
                 context.GameState = state;
-                context.UnInstall(ref context.GameState);
+                context.UnInstall();
                 context.GameState = state;
-                context.Update(ref context.GameState);
+                context.Update();
                 context.GameState = state;
-                context.Upgrade(ref context.GameState);
+                context.Upgrade();
                 Console.ReadLine();
             });
         }

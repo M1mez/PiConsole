@@ -5,30 +5,37 @@ namespace PiConsole.GameStates
 {
     class Full_Started : IGameState
     {
-        public void Install(ref IGameState oldState)
+        private readonly IGameStateSetter _setter;
+
+        public Full_Started(IGameStateSetter setter)
+        {
+            _setter = setter;
+        }
+
+        public void Install()
         {
             throw new WrongStateException("Game is already installed! And started!");
         }
 
-        public void Upgrade(ref IGameState oldState)
+        public void Upgrade()
         {
             Console.Write("Will check for Upgrades...");
         }
 
-        public void Update(ref IGameState oldState)
+        public void Update()
         {
             Console.Write("Will check for Updates...");
         }
 
-        public void Start(ref IGameState oldState)
+        public void Start()
         {
             throw new WrongStateException("Game is already started!");
         }
 
-        public void UnInstall(ref IGameState oldState)
+        public void UnInstall()
         {
             Console.Write("Game will quit and then uninstall.");
-            oldState = new Full_Uninstalled();
+            _setter.GameState = new Full_Uninstalled(_setter);
         }
     }
 }

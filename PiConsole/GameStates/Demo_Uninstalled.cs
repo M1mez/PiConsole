@@ -9,29 +9,36 @@ namespace PiConsole.GameStates
 {
     class Demo_Uninstalled : IGameState
     {
-        public void Install(ref IGameState oldState)
+        private readonly IGameStateSetter _setter;
+
+        public Demo_Uninstalled(IGameStateSetter setter)
+        {
+            _setter = setter;
+        }
+        
+        public void Install()
         {
             Console.Write("Demo will now be installed. ");
-            oldState = new Demo_Installation();
+            _setter.GameState = new Demo_Installation(_setter);
         }
 
-        public void Upgrade(ref IGameState oldState)
+        public void Upgrade()
         {
             Console.Write("Demo will now be upgraded to Full Installation, then installed. ");
-            oldState = new Full_Installation();
+            _setter.GameState = new Full_Installation(_setter);
         }
 
-        public void Update(ref IGameState oldState)
+        public void Update()
         {
             throw new WrongStateException("Demo cannot be updated, not installed yet!");
         }
 
-        public void Start(ref IGameState oldState)
+        public void Start()
         {
             throw new WrongStateException("Demo cannot be started, not installed yet!");
         }
 
-        public void UnInstall(ref IGameState oldState)
+        public void UnInstall()
         {
             throw new WrongStateException("Demo is already uninstalled!");
         }

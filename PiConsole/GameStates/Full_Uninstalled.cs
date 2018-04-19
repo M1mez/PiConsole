@@ -5,28 +5,35 @@ namespace PiConsole.GameStates
 {
     class Full_Uninstalled : IGameState
     {
-        public void Install(ref IGameState oldState)
+        private readonly IGameStateSetter _setter;
+
+        public Full_Uninstalled(IGameStateSetter setter)
+        {
+            _setter = setter;
+        }
+
+        public void Install()
         {
             Console.Write("Game will install with old Savestates.");
-            oldState = new Full_Installation();
+            _setter.GameState = new Full_Installation(_setter);
         }
 
-        public void Upgrade(ref IGameState oldState)
+        public void Upgrade()
         {
             throw new WrongStateException("Game is not installed!");
         }
 
-        public void Update(ref IGameState oldState)
+        public void Update()
         {
             throw new WrongStateException("Game is not installed!");
         }
 
-        public void Start(ref IGameState oldState)
+        public void Start()
         {
             throw new WrongStateException("Game is not installed!");
         }
 
-        public void UnInstall(ref IGameState oldState)
+        public void UnInstall()
         {
             throw new WrongStateException("Game is not installed!");
         }

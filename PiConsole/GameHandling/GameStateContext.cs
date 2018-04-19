@@ -5,21 +5,24 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
+using PiConsole.GameStates;
 
 namespace PiConsole.GameHandling
 {
-    class GameStateContext : IGameState
+    class GameStateContext : IGameState, IGameStateSetter
     {
-        public IGameState GameState;
+        public IGameState GameState { private get; set; }
 
-        public void Install(ref IGameState oldState)
+        public GameStateContext() => GameState = new EmptyState(this);
+
+        public void Install()
         {
             const string method = "Install: ";
             Console.Write(method);
             try
             {
-                GameState.Install(ref GameState);
-                PrintCurrentState(method.Length);
+                GameState.Install();
+                PrintGameState(method.Length);
             }
             catch (WrongStateException e)
             {
@@ -27,14 +30,14 @@ namespace PiConsole.GameHandling
             }
         }
 
-        public void Upgrade(ref IGameState oldState)
+        public void Upgrade()
         {
             const string method = "Upgrade: ";
             Console.Write(method);
             try
             {
-                GameState.Upgrade(ref GameState);
-                PrintCurrentState(method.Length);
+                GameState.Upgrade();
+                PrintGameState(method.Length);
             }
             catch (WrongStateException e)
             {
@@ -42,14 +45,14 @@ namespace PiConsole.GameHandling
             }
         }
 
-        public void Update(ref IGameState oldState)
+        public void Update()
         {
             const string method = "Update: ";
             Console.Write(method);
             try
             {
-                GameState.Update(ref GameState);
-                PrintCurrentState(method.Length);
+                GameState.Update();
+                PrintGameState(method.Length);
             }
             catch (WrongStateException e)
             {
@@ -57,14 +60,14 @@ namespace PiConsole.GameHandling
             }
         }
 
-        public void Start(ref IGameState oldState)
+        public void Start()
         {
             const string method = "Start: ";
             Console.Write(method);
             try
             {
-                GameState.Start(ref GameState);
-                PrintCurrentState(method.Length);
+                GameState.Start();
+                PrintGameState(method.Length);
             }
             catch (WrongStateException e)
             {
@@ -72,14 +75,14 @@ namespace PiConsole.GameHandling
             }
         }
 
-        public void UnInstall(ref IGameState oldState)
+        public void UnInstall()
         {
             const string method = "UnInstall: ";
             Console.Write(method);
             try
             {
-                GameState.UnInstall(ref GameState);
-                PrintCurrentState(method.Length);
+                GameState.UnInstall();
+                PrintGameState(method.Length);
             }
             catch (WrongStateException e)
             {
@@ -87,8 +90,14 @@ namespace PiConsole.GameHandling
             }
         }
         
-        private void PrintCurrentState(int spacing) =>
-            Console.WriteLine($"\n{new string('¯', spacing - 1)} State is now: {GameState.GetType().Name}");
+        private void PrintGameState(int spacing)
+        {
+            Console.Write($"\n{new string('¯', spacing - 1)} State is now: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(GameState.GetType().Name);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         private static void PrintExceptionBeautifully(WrongStateException e, int spacing)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -96,5 +105,6 @@ namespace PiConsole.GameHandling
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\n{new string('¯', spacing - 1)} {e.Message}");
         }
+
     }
 }
