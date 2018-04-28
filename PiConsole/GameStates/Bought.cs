@@ -8,44 +8,44 @@ using Interfaces;
 namespace PiConsole.GameStates
 {
     [Serializable]
-    class EmptyState : IGameState
+    class Bought : IGameState
     {
         private readonly IGameStateSetter _setter;
 
-        public EmptyState(IGameStateSetter setter)
+        public Bought(IGameStateSetter setter)
         {
             _setter = setter;
         }
 
         public void Buy()
         {
-            Console.Write("Will buy Game!");
-            _setter.GameState = new Bought(_setter);
+            throw new WrongStateException("Game already bought!");
         }
 
         public void Download()
         {
-            throw new WrongStateException("Buy first!");
+            Console.Write("Will Download!");
+            _setter.GameState = new Downloaded(_setter);
         }
 
         public void Install()
         {
-            throw new WrongStateException("Buy first!");
+            throw new WrongStateException("Download first!");
         }
 
         public void Update()
         {
-            throw new WrongStateException("Buy first!");
+            throw new WrongStateException("Download first!");
         }
 
         public void Start()
         {
-            throw new WrongStateException("Buy first!");
+            throw new WrongStateException("Download first!");
         }
 
         public void Uninstall()
         {
-            throw new WrongStateException("Game not even bought!");
+            throw new WrongStateException("Game not even downloaded!");
         }
     }
 }

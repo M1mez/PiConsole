@@ -7,22 +7,24 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
+using PiConsole.GameHandling;
+using PiConsole.GameStates;
 
 namespace PiConsole.FileHandling
 {
-    public class RuntimeAddGame
+    public static class RuntimeAddGame
     {
         public static int SyncDll()
         {
             int outcome = 0;
-            ExtractIfZipped(_dirArchives);
+            ExtractIfZipped(DirArchives);
 
-            _dirGames.ForEach(game => LoadAtRuntime(game, true));
-            _dirPlugins.ForEach(plugin => LoadAtRuntime(plugin, false));
+            DirGames.ForEach(game => LoadAtRuntime(game, true));
+            DirPlugins.ForEach(plugin => LoadAtRuntime(plugin, false));
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                Console.WriteLine(assembly.FullName);
+                //Console.WriteLine(assembly.FullName);
             }
 
 
@@ -30,7 +32,8 @@ namespace PiConsole.FileHandling
             return outcome;
         }
 
-        public List<IGameState> LoadedGames = new List<IGameState>();
+        public static List<IPlugin> LoadedPlugins = new List<IPlugin>();
+        public static List<IGame> LoadedGames = new List<IGame>();
         //public List<IPlugin> LoadedPlugins = new List<IPlugin>();
 
         private static void LoadAtRuntime(string dllPath, bool isGame)
@@ -40,24 +43,30 @@ namespace PiConsole.FileHandling
             foreach (Type type in DLL.GetExportedTypes())
             {
                 var c = Activator.CreateInstance(type);
-                type.InvokeMember("Output", BindingFlags.InvokeMethod, null, c, new object[] { @"Hello" });
+                if (isGame && c is IGame game)
+                {
+                    if (LoadedGames.All(loaded => game.Name != loaded.Name))
+                    {
+                        //game.Context = new GameStateContext();
+                        LoadedGames.Add(game);
+                    }
+                }
+                else LoadedPlugins.Add((IPlugin) c);
             }
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static List<string> _loadedDll = new List<string>();
 
-        private static List<string> _dirGames => Directory.GetFiles(Constants.GamePath, "*.dll").Select(Path.GetFullPath).ToList();
-        private static List<string> _dirPlugins => Directory.GetFiles(Constants.PluginPath, "*.dll").Select(Path.GetFullPath).ToList();
-        private static List<string> _dirArchives
+        private static List<string> DirGames => Directory.GetFiles(Constants.GamePath, "*.dll").Select(Path.GetFullPath).ToList();
+        private static List<string> DirPlugins => Directory.GetFiles(Constants.PluginPath, "*.dll").Select(Path.GetFullPath).ToList();
+        private static List<string> DirArchives
         {
             get
             {
                 var zipList = new List<string>();
-                //zipList.AddRange(Directory.GetFiles(Constants.PluginPath, "*.zip").Select(Path.GetFullPath).ToList());
                 zipList.AddRange(Directory.GetFiles(Constants.PluginPath, "*.plugin").Select(Path.GetFullPath).ToList());
-                //zipList.AddRange(Directory.GetFiles(Constants.GamePath, "*.zip").Select(Path.GetFullPath).ToList());
                 zipList.AddRange(Directory.GetFiles(Constants.GamePath, "*.game").Select(Path.GetFullPath).ToList());
                 return zipList;
             }

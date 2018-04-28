@@ -9,11 +9,45 @@ using PiConsole.GameStates;
 
 namespace PiConsole.GameHandling
 {
-    class GameStateContext : IGameState, IGameStateSetter
+    [Serializable]
+    public class GameStateContext : IGameStateContext
     {
         public IGameState GameState { private get; set; }
 
-        public GameStateContext() => GameState = new EmptyState(this);
+        public GameStateContext()
+        {
+            GameState = new EmptyState(this);
+        }
+
+        public void Buy()
+        {
+            const string method = "Buy: ";
+            Console.Write(method);
+            try
+            {
+                GameState.Buy();
+                PrintGameState(method.Length);
+            }
+            catch (WrongStateException e)
+            {
+                PrintExceptionBeautifully(e, method.Length);
+            }
+        }
+
+        public void Download()
+        {
+            const string method = "Download: ";
+            Console.Write(method);
+            try
+            {
+                GameState.Download();
+                PrintGameState(method.Length);
+            }
+            catch (WrongStateException e)
+            {
+                PrintExceptionBeautifully(e, method.Length);
+            }
+        }
 
         public void Install()
         {
@@ -30,7 +64,7 @@ namespace PiConsole.GameHandling
             }
         }
 
-        public void Upgrade()
+        /*public void Upgrade()
         {
             const string method = "Upgrade: ";
             Console.Write(method);
@@ -43,7 +77,7 @@ namespace PiConsole.GameHandling
             {
                 PrintExceptionBeautifully(e, method.Length);
             }
-        }
+        }*/
 
         public void Update()
         {
@@ -75,13 +109,13 @@ namespace PiConsole.GameHandling
             }
         }
 
-        public void UnInstall()
+        public void Uninstall()
         {
-            const string method = "UnInstall: ";
+            const string method = "Uninstall: ";
             Console.Write(method);
             try
             {
-                GameState.UnInstall();
+                GameState.Uninstall();
                 PrintGameState(method.Length);
             }
             catch (WrongStateException e)

@@ -3,6 +3,7 @@ using Interfaces;
 
 namespace PiConsole.GameStates
 {
+    [Serializable]
     class NeedsUpdate : IGameState
     {
         private readonly IGameStateSetter _setter;
@@ -12,33 +13,37 @@ namespace PiConsole.GameStates
             _setter = setter;
         }
 
-        public void Install()
+        public void Buy()
         {
-            throw new WrongStateException("Game is already installed!");
+            throw new WrongStateException("Game already bought!");
         }
 
-        public void Upgrade()
+        public void Download()
         {
-            Console.Write("Will update and check for upgrades.");
-            _setter.GameState = new Full_Installation(_setter);
+            throw new WrongStateException("Game already downloaded!");
+        }
+
+        public void Install()
+        {
+            throw new WrongStateException("Game already installed!");
         }
 
         public void Update()
         {
             Console.Write("Will Update Game...");
-            _setter.GameState = new Full_Installation(_setter);
+            _setter.GameState = new Installed(_setter);
         }
 
         public void Start()
         {
             Console.Write("Game will update and then start.");
-            _setter.GameState = new Full_Started(_setter);
+            _setter.GameState = new Started(_setter);
         }
 
-        public void UnInstall()
+        public void Uninstall()
         {
             Console.Write("Game will uninstall...");
-            _setter.GameState = new Full_Uninstalled(_setter);
+            _setter.GameState = new Bought(_setter);
         }
     }
 }

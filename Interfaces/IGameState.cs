@@ -4,11 +4,12 @@ namespace Interfaces
 {
     public interface IGameState
     {
+        void Buy();
+        void Download();
         void Install();
-        void Upgrade();
-        void Update();
         void Start();
-        void UnInstall();
+        void Uninstall();
+        void Update();
     }
 
     public class WrongStateException : Exception
