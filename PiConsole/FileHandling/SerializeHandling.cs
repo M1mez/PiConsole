@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
+using PiConsole.GameHandling;
 
 namespace PiConsole.FileHandling
 {
@@ -16,6 +17,13 @@ namespace PiConsole.FileHandling
             Serialize(new List<object>(users), Constants.UsersFile);
         public static void Serialize(List<IGame> games) =>
             Serialize(new List<object>(games), Constants.GamesFile);
+
+        public static void SyncSerialize()
+        {
+            GameManagement.SyncGames();
+            Serialize(UserManagement.Users);
+        }
+
         public static void Serialize (List<object> list, string filePath)
         {
             //if (!File.Exists(filePath)) File.Create(filePath).Dispose();

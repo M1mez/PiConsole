@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestGame", "TESTGAME\TESTGAME\TestGame.csproj", "{5BBA165F-0BA9-4F8E-94B7-43E9CB239E7F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SWPTheGame", "SWPTheGame\SWPTheGame.csproj", "{84384496-3959-4639-AE6C-47EE7725EDED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5BBA165F-0BA9-4F8E-94B7-43E9CB239E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BBA165F-0BA9-4F8E-94B7-43E9CB239E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BBA165F-0BA9-4F8E-94B7-43E9CB239E7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84384496-3959-4639-AE6C-47EE7725EDED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84384496-3959-4639-AE6C-47EE7725EDED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84384496-3959-4639-AE6C-47EE7725EDED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84384496-3959-4639-AE6C-47EE7725EDED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
+using PiConsole.FileHandling;
 using PiConsole.GameHandling;
 
 namespace PiConsole
@@ -21,29 +22,53 @@ namespace PiConsole
 
         public Guid ID;
         public string Name;
-        private List<IGame> _ownedGames;
-        public List<IGame> OwnedGames => _ownedGames ?? (_ownedGames = GameManagement.AllOwnedGames
-                                             .Where(game => game.Owner == ID).ToList());
-
-        public void SyncGames()
+        private List<IGame> _ownedGames = new List<IGame>();
+        public List<IGame> OwnedGames
         {
-            List<IGame> allGames = GameManagement.AllOwnedGames;
-            List<IGame> gamesExceptOwned = allGames.Except(OwnedGames).ToList();
-            _ownedGames.AddRange(gamesExceptOwned.Where(game => game.Owner == ID));
+            get { return _ownedGames; }
+            set
+            {
+                _ownedGames = value;
+            }
         }
 
+        private List<IGame> _buyableGames;
+        public List<IGame> BuyableGames
+        {
+            get
+            {
+                IEnumerable<string> ownedNames = OwnedGames
+                    ?.Select(game => game.Name);
+                IEnumerable<IGame> ownedInAvailable = new List<IGame>();
+                if (ownedNames != null)
+                    ownedInAvailable = GameManagement.AllAvailableGames
+                        .Where(game => ownedNames.Contains(game.Name));
+                _buyableGames = GameManagement.AllAvailableGames.Except(ownedInAvailable).ToList();
+                return _buyableGames ?? new List<IGame>();
+            }
+        }
 
-        private bool _isLent(IGame game) => !game.Owner.Equals(game.CurrentUser);
+        private List<IGame> _borrowedGames;
+        public List<IGame> BorrowedGames => _borrowedGames ?? (_borrowedGames = new List<IGame>());
+
+        public List<IGame> WantsToBeBorrowed =>
+            OwnedGames.FindAll(game => game._userWhoWantsToBorrow != null).ToList();
 
         //invoked by owner
         public void Lend(IGame game)
         {
-            if (game._userWhoWantsToBorrow != null) game.CurrentUser = (Guid)game._userWhoWantsToBorrow;
+            if (!WantsToBeBorrowed.Contains(game)) throw new Exception($"game {game.Name} does not exist in OwnedGames!");
+            if (game._userWhoWantsToBorrow != null) game.CurrentUser = (Guid) game._userWhoWantsToBorrow;
+            var userWhoWantsToBorrow = UserManagement.Users?.Find(user => user.ID == game._userWhoWantsToBorrow);
+            userWhoWantsToBorrow?.BorrowedGames.Add(game);
             game._userWhoWantsToBorrow = null;
         }
-        public void Reclaim(IGame game) => game.CurrentUser = game.Owner;
-
-        //invoked by other user
-        public void BorrowThisGame(Guid otherUserId, IGame game) => game._userWhoWantsToBorrow = otherUserId;
+        public void Reclaim(IGame game)
+        {
+            if (!OwnedGames.Contains(game)) throw new Exception($"game {game.Name} does not exist in OwnedGames!");
+            var currentUser = UserManagement.Users?.Find(user => user.ID == game.CurrentUser);
+            game.CurrentUser = game.Owner;
+            currentUser?.BorrowedGames.RemoveAll(borrowed => borrowed.Name == game.Name && borrowed.Owner == game.Owner);
+        }
     }
 }

@@ -33,7 +33,8 @@ namespace PiConsole.FileHandling
         }
 
         public static List<IPlugin> LoadedPlugins = new List<IPlugin>();
-        public static List<IGame> LoadedGames = new List<IGame>();
+
+        public static List<IGame> LoadedGames = GameManagement.SavedAvailableGames;
         //public List<IPlugin> LoadedPlugins = new List<IPlugin>();
 
         private static void LoadAtRuntime(string dllPath, bool isGame)

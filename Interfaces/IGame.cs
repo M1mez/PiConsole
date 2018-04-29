@@ -12,5 +12,6 @@ namespace Interfaces
         Guid? _userWhoWantsToBorrow { get; set; }
         string Name { get; }
         IGameStateContext Context { get; set; }
+        bool IsLent { get; }
     }
 }

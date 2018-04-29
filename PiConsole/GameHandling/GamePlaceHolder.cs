@@ -35,5 +35,7 @@ namespace PiConsole
         public Guid? _userWhoWantsToBorrow { get; set; } = null;
         public string Name { get; }
         public IGameStateContext Context { get; set; }
+
+        public bool IsLent => CurrentUser != null && Owner != CurrentUser;
     }
 }
