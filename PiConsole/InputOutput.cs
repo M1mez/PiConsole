@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Interfaces;
 using PiConsole.Commands;
 using PiConsole.FileHandling;
@@ -189,6 +190,7 @@ namespace PiConsole
 
         public static User Intro()
         {
+            Console.Clear();
             PrintUnderlined("What do you want to do?");
             do
             {
@@ -248,6 +250,7 @@ namespace PiConsole
                         return null;
                     default:
                     {
+                        Console.Clear();
                         PrintUnderlined("Please choose one of the following:");
                         break;
                     }
@@ -258,10 +261,11 @@ namespace PiConsole
 
         public static void UserMenu(User currentUser)
         {
-
+            Console.Clear();
             PrintUnderlined($"What do you want to do, {currentUser.Name}?");
             do
             {
+                //PrintUnderlined($"Logged in: {currentUser.Name}");
                 Console.WriteLine("1. List all my Games");
                 Console.WriteLine("2. List all Games i can buy");
                 Console.WriteLine("3. Enter command");
@@ -355,6 +359,7 @@ namespace PiConsole
                     }
                     default:
                     {
+                        Console.Clear();
                         PrintUnderlined($"{currentUser.Name}, please choose one of the following:");
                         break;
                     }

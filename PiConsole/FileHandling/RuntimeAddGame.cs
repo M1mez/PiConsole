@@ -12,6 +12,7 @@ using PiConsole.GameStates;
 
 namespace PiConsole.FileHandling
 {
+    //TODO activator
     public static class RuntimeAddGame
     {
         public static int SyncDll()
@@ -34,7 +35,7 @@ namespace PiConsole.FileHandling
 
         public static List<IPlugin> LoadedPlugins = new List<IPlugin>();
 
-        public static List<IGame> LoadedGames = GameManagement.SavedAvailableGames;
+        public static List<IGame> RuntimeLoadedGames = GameManagement.SavedAvailableGames;
         //public List<IPlugin> LoadedPlugins = new List<IPlugin>();
 
         private static void LoadAtRuntime(string dllPath, bool isGame)
@@ -46,10 +47,10 @@ namespace PiConsole.FileHandling
                 var c = Activator.CreateInstance(type);
                 if (isGame && c is IGame game)
                 {
-                    if (LoadedGames.All(loaded => game.Name != loaded.Name))
+                    if (RuntimeLoadedGames.All(loaded => game.Name != loaded.Name))
                     {
                         //game.Context = new GameStateContext();
-                        LoadedGames.Add(game);
+                        RuntimeLoadedGames.Add(new GamePlaceHolder(game));
                     }
                 }
                 else LoadedPlugins.Add((IPlugin) c);

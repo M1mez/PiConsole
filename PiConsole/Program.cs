@@ -20,11 +20,12 @@ namespace PiConsole
         {
             Console.Write("#Wondergreat© #Wonderconsole© by #Wondermiel© and #Wondermed©\n\n");
 
-            var x = GameManagement.AllAvailableGames;
+            //var y = RuntimeAddGame.RuntimeLoadedGames;
+            //var x = GameManagement.AllAvailableGames;
             //ShowCommands();
             UserManagement.UserInteraction();
             //RuntimeAddGame.SyncDll();
-
+            Console.ReadLine();
         }
         
         private static void ShowStates()

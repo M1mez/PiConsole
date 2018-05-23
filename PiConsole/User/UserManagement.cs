@@ -24,7 +24,7 @@ namespace PiConsole
         }
 
         public static string FindUserName(Guid userGuid) => _users.Find(user => user.ID == userGuid)?.Name;
-        private static User _currentUser;
+        public static User _currentUser;
 
         public static IGame AddGame(IGame newGameProto)
         {

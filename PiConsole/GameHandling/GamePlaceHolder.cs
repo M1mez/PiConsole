@@ -15,6 +15,11 @@ namespace PiConsole
     {
         public GamePlaceHolder() { }
 
+        public GamePlaceHolder(IGame gameToRepresent)
+        {
+            Name = gameToRepresent.Name;
+        }
+
         public GamePlaceHolder(string name, Guid userId)
         {
             Name = name;

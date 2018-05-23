@@ -27,10 +27,13 @@ namespace PiConsole.GameHandling
         public static void SyncGames()
         {
             RuntimeAddGame.SyncDll();
-            List<IGame> loadedGames = RuntimeAddGame.LoadedGames;
-            List<IGame> notYetSavedGames = loadedGames.Except(SavedAvailableGames).ToList();
-            notYetSavedGames.ForEach(AddGame);
-            _allAvailableGames = SavedAvailableGames;
+            List<IGame> runtimeLoadedGames = RuntimeAddGame.RuntimeLoadedGames;
+            List<IGame> notYetSavedGames = runtimeLoadedGames
+                .Where(runtime => SavedAvailableGames.All(saved => saved.Name != runtime.Name))
+                .ToList();
+            //List<IGame> notYetSavedGames = runtimeLoadedGames.Except(SavedAvailableGames).ToList();
+            notYetSavedGames.ForEach(_savedAvailableGames.Add);
+            _allAvailableGames = SavedAvailableGames.Union(_allAvailableGames ?? new List<IGame>()).ToList();
             SerializeHandling.Serialize(_allAvailableGames);
         }
 
